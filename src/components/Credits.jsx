@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import Slider from "react-slick";
-// import Loader from "./Loader";
 import CreditsItem from "./CreditsItem";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,12 +13,10 @@ const Wrapper = styled.div`
 
 const Credits = ({ list, secureUrl }) => {
   if (!list) {
-    // return <Loader />;
   }
   const [totalShow, setTotalShow] = useState(null);
   const sliderElement = useRef();
 
-  // Set amount of items to show on slider based on the width of the element
   const changeTotalShow = () => {
     let totalItems = Math.round(sliderElement.current.offsetWidth / 70);
     if (totalItems > list.length) {

@@ -34,7 +34,6 @@ const CreditsItem = ({ person, secureUrl }) => {
         // Image loaded, set loaded to true
         onLoad={() => setLoaded(true)}
         // If no image, error will occurr, we set error to true
-        // And only change the src to the nothing svg if it isn't already, to avoid infinite callback
         onError={(e) => {
           if (e.target.src !== `${noperson}`) {
             e.target.src = `${noperson}`;

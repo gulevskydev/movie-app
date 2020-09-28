@@ -34,7 +34,7 @@ const MovieWrapper = styled(Link)`
     transform: scaleY(0);
     transform-origin: top;
     opacity: 0;
-    background-color: var(--color-primary);
+    background: #b165bb;
     z-index: -99;
     box-shadow: 0rem 2rem 5rem var(--shadow-color-dark);
     transition: all 100ms cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -151,18 +151,12 @@ const MovieItem = ({ movie, secureUrl }) => {
   return (
     <LazyLoad height={200} offset={200}>
       <MovieWrapper to={`${process.env.PUBLIC_URL}/movie/${movie.id}`}>
-        {/* {!loaded ? (
-          <ImgLoading>
-            <Loading />
-          </ImgLoading>
-        ) : null} */}
         <MovieImg
           src={`${secureUrl}w342${movie.poster_path}`}
           style={!loaded ? { display: "none" } : {}}
           onLoad={() => setLoaded(true)}
           error={error ? 1 : 0}
           // If no image, error will occurr, we set error to true
-          // And only change the src to the nothing svg if it isn't already, to avoid infinite callback
           onError={(e) => {
             setError(true);
             if (e.target.src !== `${noImage}`) {

@@ -4,7 +4,6 @@ import Select from "react-select";
 const SortBy = ({ option, setOption }) => {
   function handleChange(selectedOption) {
     setOption(selectedOption);
-    console.log(selectedOption);
   }
 
   return (

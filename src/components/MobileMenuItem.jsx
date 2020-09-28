@@ -1,12 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCalendar,
-  faHeart,
-  faDotCircle,
-  faPoll,
-} from "@fortawesome/free-solid-svg-icons";
 
 const StyledItem = styled.div`
   width: 100%;
@@ -45,25 +39,23 @@ const StyledItem = styled.div`
   }
   &:hover {
     border: 1px solid;
-    background: #b165bb;
   }
-  background-color: ${(props) => (props.selected ? "#b165bb" : "transparent")};
 `;
 
 function renderIcon(title) {
   switch (title) {
     case "Popular":
-      return faHeart;
+      return "heart";
     case "Top Rated":
-      return faPoll;
+      return "poll";
     case "Upcoming":
-      return faCalendar;
+      return "calendar";
     default:
-      return faDotCircle;
+      return "dot-circle";
   }
 }
 
-const SidebarItem = ({ title, selected, mobile }) => {
+const MobileMenuItem = ({ title, selected, mobile }) => {
   return (
     <StyledItem selected={selected} mobile={mobile}>
       <FontAwesomeIcon
@@ -76,4 +68,4 @@ const SidebarItem = ({ title, selected, mobile }) => {
   );
 };
 
-export default SidebarItem;
+export default MobileMenuItem;

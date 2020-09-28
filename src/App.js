@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { initApp } from "./store/actions/actionCreators";
 
 //components
-import { SearchComponent } from "./components/index";
+import { SearchComponent, Loader, NotFound } from "./components/index";
 //containers
 import {
   Search,
@@ -15,6 +15,7 @@ import {
   SearchByGenres,
   MoviePage,
   Actor,
+  MobileMenu,
 } from "./containers/index";
 
 // styles
@@ -53,20 +54,44 @@ const SearhWrap = styled.div`
 `;
 
 const App = ({ initApp, isLoading }) => {
+  const [isMobile, setisMobile] = useState(null);
+
   useEffect(() => {
     initApp();
   }, []);
+
+  const changeMobile = () => {
+    window.matchMedia("(max-width: 80em)").matches
+      ? setisMobile(true)
+      : setisMobile(false);
+  };
+
+  useEffect(() => {
+    changeMobile();
+    window.addEventListener("resize", changeMobile);
+    return () => window.removeEventListener("resize", changeMobile);
+  }, []);
+
   return isLoading ? (
-    <h1>Loading</h1>
+    <MainContainerWrap>
+      <MainContentWrap>
+        <Loader />
+      </MainContentWrap>
+    </MainContainerWrap>
   ) : (
     <>
       <Router history={history}>
-        <MainContainerWrap>
-          <Sidebar />
-          <SearhWrap>
-            <SearchComponent />
-          </SearhWrap>
-
+        <MainContainerWrap isMobile={isMobile}>
+          {isMobile ? (
+            <MobileMenu />
+          ) : (
+            <>
+              <Sidebar />
+              <SearhWrap>
+                <SearchComponent />
+              </SearhWrap>
+            </>
+          )}
           <MainContentWrap>
             <Switch>
               <Route
@@ -83,6 +108,17 @@ const App = ({ initApp, isLoading }) => {
               <Route path="/genres/:name" exact component={SearchByGenres} />
               <Route path="/movie/:id" exact component={MoviePage} />
               <Route path="/person/:id" exact component={Actor} />
+              <Route
+                path="/404"
+                component={() => (
+                  <NotFound title="Upps!" subtitle={`This doesn't exist...`} />
+                )}
+              />
+              <Route
+                component={() => (
+                  <NotFound title="Upps!" subtitle={`This doesn't exist...`} />
+                )}
+              />
             </Switch>
           </MainContentWrap>
         </MainContainerWrap>

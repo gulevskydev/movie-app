@@ -4,3 +4,4 @@ export { default as SearchByCategorie } from "./SearchByCategorie";
 export { default as SearchByGenres } from "./SearchByGenres";
 export { default as MoviePage } from "./MoviePage";
 export { default as Actor } from "./Actor";
+export { default as MobileMenu } from "./MobileMenu";

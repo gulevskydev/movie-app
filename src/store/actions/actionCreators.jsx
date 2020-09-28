@@ -1,5 +1,4 @@
 import * as TYPES from "./actionTypes";
-import history from "../../history";
 import api from "../../utils/api";
 
 export const initApp = () => async (dispatch) => {
@@ -12,7 +11,6 @@ export const initApp = () => async (dispatch) => {
 export const getConfig = () => async (dispatch) => {
   const response = await api.get("/configuration");
   const { data } = response;
-  console.log(data);
   dispatch({
     type: TYPES.GET_CONFIG,
     payload: data,
@@ -39,7 +37,6 @@ export const fetchMoviesSearch = (query, page) => async (dispatch) => {
 // Get genres from API
 export const getGenres = () => async (dispatch) => {
   const response = await api.get("/genre/movie/list");
-  console.log(response);
   dispatch({
     type: TYPES.GET_GENRES,
     payload: response.data,
@@ -87,7 +84,10 @@ export const selectedCategorie = (categorie) => (dispatch, getState) => {
       type: TYPES.SET_SELECTED_CATEGORIE,
       payload: categorie,
     });
-  } else {
+  } else if (
+    categories.find((category) => category === categorie) ||
+    genres.find((genre) => genre.name === categorie)
+  ) {
     dispatch({
       type: TYPES.SET_SELECTED_CATEGORIE,
       payload: "",
@@ -146,7 +146,6 @@ export const getMovie = (id) => async (dispatch) => {
       type: TYPES.FETCH_MOVIEPAGE,
       payload: data,
     });
-    console.log("MOVIE", data);
     await dispatch(getCredits());
     dispatch({ type: TYPES.FETCH_MOVIEPAGE_FINISHED });
   } catch (error) {

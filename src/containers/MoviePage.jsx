@@ -20,6 +20,7 @@ import {
   Movies,
   Button,
   Credits,
+  NotFound,
   Loader,
 } from "../components/index";
 import noImage from "../img/noimage.svg";
@@ -268,7 +269,6 @@ const MoviePage = ({
     });
     getMovie(match.params.id);
     return () => {
-      //   clearMovie();
       setLoaded(false);
     };
   }, [match.params.id]);
@@ -276,7 +276,6 @@ const MoviePage = ({
   // Fetch recommended movies everytime recommendations page change
   useEffect(() => {
     getMoviesRecommendations(match.params.id, params.page);
-    // return () => clearRecommendations();
   }, [params.page]);
 
   // If loading
@@ -291,18 +290,12 @@ const MoviePage = ({
     <Wrapper>
       <LazyLoad height={500}>
         <MovieWrapper>
-          {/* {!loaded ? (
-            <ImgLoading>
-              <Loading />
-            </ImgLoading>
-          ) : null} */}
           <ImageWrapper style={!loaded ? { display: "none" } : {}}>
             <MovieImg
               error={error ? 1 : 0}
               src={`${secure_base_url}w780${movie.poster_path}`}
               onLoad={() => setLoaded(true)}
-              // If no image, error will occurr, we set error to true
-              // And only change the src to the nothing svg if it isn't already, to avoid infinite callback
+              // If no image, error will occurr and  set error to true
               onError={(e) => {
                 setError(true);
                 if (e.target.src !== `${noImage}`) {
@@ -361,13 +354,11 @@ const MoviePage = ({
 
 //Render the back button if user was pushed into page
 function renderBack() {
-  // if (history.action === "PUSH") {
   return (
     <div onClick={history.goBack}>
       <Button title="Back" solid left icon="faArrowLeft" />
     </div>
   );
-  // }
 }
 
 // Render Personal Website button
@@ -394,30 +385,34 @@ function renderImdb(id) {
   );
 }
 
-// Render Trailer button. On click triggers state to open modal of trailer
+// Render Trailer button
 function renderTrailer(videos, modalOpened, setmodalOpened) {
   if (videos.length === 0) {
     return;
+  } else if (videos.length === 1) {
+    if (videos[0].type !== "Trailer" && videos[0].site !== "YouTube") return;
+  } else {
+    const { key } = videos.find(
+      (video) => video.type === "Trailer" && video.site === "YouTube"
+    );
+
+    return (
+      <React.Fragment>
+        <div onClick={() => setmodalOpened(true)}>
+          <Button title="Trailer" icon="faPlay" />
+        </div>
+        <ModalVideo
+          channel="youtube"
+          isOpen={modalOpened}
+          videoId={key}
+          onClose={() => setmodalOpened(false)}
+        />
+      </React.Fragment>
+    );
   }
-  const { key } = videos.find(
-    (video) => video.type === "Trailer" && video.site === "YouTube"
-  );
-  return (
-    <React.Fragment>
-      <div onClick={() => setmodalOpened(true)}>
-        <Button title="Trailer" icon="faPlay" />
-      </div>
-      <ModalVideo
-        channel="youtube"
-        isOpen={modalOpened}
-        videoId={key}
-        onClose={() => setmodalOpened(false)}
-      />
-    </React.Fragment>
-  );
 }
 
-// Function to get the year only from the date
+// Function to get the year
 function splitYear(date) {
   if (!date) {
     return;
@@ -442,16 +437,14 @@ function renderInfo(languages, time, data) {
 // Render recommended movies
 function renderRecommended(recommendations, base_url) {
   if (recommendations.loading) {
-    return <h1>Loading</h1>;
-    // return <Loader />;
+    return <h2>Loading ...</h2>;
   } else if (recommendations.total_results === 0) {
-    return <h1>Not Found</h1>;
-    // return (
-    //   <NotFound
-    //     title="Sorry!"
-    //     subtitle={`There are no recommended movies...`}
-    //   />
-    // );
+    return (
+      <NotFound
+        title="Sorry!"
+        subtitle={`There are no recommended movies...`}
+      />
+    );
   } else {
     return (
       <Element name="scroll-to-element">

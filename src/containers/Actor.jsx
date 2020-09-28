@@ -211,29 +211,19 @@ const Actor = ({
       delay: 500,
     });
     getActor(match.params.id);
-    //   return () => clearPerson();
   }, [match.params.id]);
 
   // Fetch movies where actor enters
   useEffect(() => {
     getMoviesByActor(match.params.id, params.page, option.value);
-    // return () => clearMoviesforPerson();
   }, [params.page, option]);
-  console.log(actor);
-  // If loading
   if (actor.loading) {
     return <h1>Loading</h1>;
-    // return <Loader />;
   }
   return (
     <Wrapper>
       <LazyLoad height={500}>
         <PersonWrapper>
-          {/* {!loaded ? (
-              <ImgLoading>
-                <Loading />
-              </ImgLoading>
-            ) : null} */}
           <ImageWrapper style={!loaded ? { display: "none" } : {}}>
             <MovieImg
               error={error ? 1 : 0}
@@ -295,13 +285,11 @@ function renderDate(birthday, deathday) {
 
 // Render back button
 function renderBack() {
-  //   if (history.action === "PUSH") {
   return (
     <div onClick={history.goBack}>
       <Button title="Back" solid left icon="faArrowLeft" />
     </div>
   );
-  //   }
 }
 
 // Render website of actor
@@ -337,10 +325,8 @@ function renderPersonMovies(
 ) {
   if (recommendationByActor.loading) {
     return <h1>loading</h1>;
-    // return <Loader />;
   } else if (recommendationByActor.total_results === 0) {
     return "Heloo";
-    // return <NotFound title="Sorry!" subtitle={`There are no more movies...`} />;
   } else {
     return (
       <React.Fragment>

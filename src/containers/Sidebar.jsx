@@ -6,9 +6,6 @@ import StickyBox from "react-sticky-box";
 
 import { SidebarItem, Logo } from "../components/index";
 
-// import TmdbLogo from '../svg/tmdb.svg';
-// import MenuItem from '../components/MenuItem';
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,12 +56,6 @@ const Sidebar = ({ genres, categories, config, selected }) => {
         {renderCategories(categories, selected)}
         <Heading>Genres</Heading>
         {renderGenres(genres, selected)}
-
-        <Svg
-          //   src={`${TmdbLogo}`}
-          alt="The Movie Database"
-          style={{ margin: "2rem 0" }}
-        />
       </Wrapper>
     </StickyBox>
   );
@@ -72,11 +63,7 @@ const Sidebar = ({ genres, categories, config, selected }) => {
 
 function renderCategories(categories, selected, setisOpened) {
   return categories.map((categorie, i) => (
-    <LinkWrap
-      to={`${process.env.PUBLIC_URL}/movies/${categorie}`}
-      key={i}
-      //   onClick={setisOpened ? () => setisOpened(false) : null}
-    >
+    <LinkWrap to={`${process.env.PUBLIC_URL}/movies/${categorie}`} key={i}>
       <SidebarItem
         mobile={setisOpened ? 1 : 0}
         title={categorie}
@@ -90,9 +77,7 @@ function renderGenres(genres, selected, setisOpened) {
   return genres.map((genre) => (
     <LinkWrap
       to={`${process.env.PUBLIC_URL}/genres/${genre.name}`}
-      key={genre.id}
-      //   onClick={setisOpened ? () => setisOpened(false) : null}
-    >
+      key={genre.id}>
       <SidebarItem
         mobile={setisOpened ? 1 : 0}
         title={genre.name}

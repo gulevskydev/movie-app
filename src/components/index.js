@@ -10,3 +10,5 @@ export { default as Button } from "./Button";
 export { default as Rating } from "./Rating";
 export { default as Credits } from "./Credits";
 export { default as Loader } from "./Loader";
+export { default as NotFound } from "./NotFound";
+export { default as MobileMenuItem } from "./MobileMenuItem";

@@ -16,7 +16,6 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-// Discover Component
 const SearchByCategorie = ({
   config,
   match,
@@ -28,14 +27,12 @@ const SearchByCategorie = ({
   const params = queryString.parse(location.search);
   const { secure_base_url } = config.base.images;
 
-  // Send url to setSelected Action Creator, it will check if is valid
   useEffect(() => {
     selectedCategorie(match.params.categorie);
-    // Clean up to remove selected menu from state
     return () => selectedCategorie();
   }, [match.params.categorie]);
 
-  // Call hook to fetch movies discover, pass in the url query
+  // Call hook to fetch movies
   useSearchMoviesByCategorie(
     match.params.categorie,
     getMoviesByCategories,
@@ -47,7 +44,6 @@ const SearchByCategorie = ({
     return <Loader />;
   }
 
-  // Else return movies list
   return (
     <Wrapper>
       <Title title={config.selected} subtitle="movies" />
@@ -56,24 +52,16 @@ const SearchByCategorie = ({
   );
 };
 
-// Hook to fetch the movies, will be called everytime the route or the filters from the state change
-function useSearchMoviesByCategorie(
-  categorie,
-  getMoviesByCategories,
-  params,
-  clearMovies
-) {
+function useSearchMoviesByCategorie(categorie, getMoviesByCategories, params) {
   const query = categorie.replace(/\s+/g, "_").toLowerCase();
   useEffect(() => {
     scroll.scrollToTop({
       smooth: true,
     });
     getMoviesByCategories(query, params.page);
-    // return () => clearMovies();
   }, [query, params.page]);
 }
 
-// Map State to Component Props
 const mapStateToProps = ({ config, movies }) => {
   return { config, movies };
 };

@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-// import MovieItem from './MovieItem';
-// import Pagination from './Pagination';
 import { SingleMovie, Pagination } from "./index";
 
 const MoviesWrapper = styled.div`
